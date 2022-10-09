@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.utils.text import slugify
 from django.db import models
 from PIL import Image
@@ -9,7 +10,7 @@ class Produto(models.Model):
     nome= models.CharField(max_length=255)
     descricao_curta= models.TextField(max_length= 255)
     descricao_longa= models.TextField()
-    imagem= models.ImageField(upload_to='media', blank=True, null=True )
+    imagem= models.ImageField(upload_to='produto_imagens/%Y/%m/', blank=True, null=True )
     slug= models.SlugField(unique=True, blank=True, null=True )
     preco_marketing= models.FloatField(verbose_name='Preço')
     preco_marketing_promocional= models.FloatField(default=0, verbose_name='Preço Promo')
@@ -34,16 +35,15 @@ class Produto(models.Model):
 
     @staticmethod
     def resize_image(img, new_width=800):
-        img_full_path= os.path.join(settings.MEDIA_ROOT, img.name)
+        img_full_path=os.path.join(settings.MEDIA_ROOT, img.name)
         img_pil= Image.open(img_full_path)
         original_width, original_height = img_pil.size
-
-        if original_width<= new_width:
-            print('retornando, largura original menor que a nova largura')
+        
+        if original_width <= new_width:
             img_pil.close()
             return 
 
-        new_height= round((new_width*original_height)/original_width)
+        new_height= round((new_width * original_height) / original_width)
 
         new_img= img_pil.resize((new_width,new_height), Image.LANCZOS)
         new_img.save(
@@ -51,10 +51,8 @@ class Produto(models.Model):
             optimize=True,
             quality=50
         )
-        print('imagems foi redimensionada')
 
-
-
+        print('imagem foi redimensionada')
 
 
 
