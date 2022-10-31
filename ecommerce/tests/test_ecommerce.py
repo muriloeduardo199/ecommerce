@@ -1,4 +1,4 @@
-from e_commerce import __version__
+from ecommerce import __version__
 
 
 def test_version():
