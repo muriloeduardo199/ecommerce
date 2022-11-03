@@ -4,7 +4,8 @@ from django.views.generic.list import ListView
 from django.views import View
 from django.http import HttpResponse
 
-from .import models
+from . import forms
+from . import models
 
 
 
@@ -14,7 +15,7 @@ class BasePerfil(View):
     def setup(self, *args, **kwargs):
         super().setup(*args, **kwargs)
 
-
+        
         if self.request.user.is_authenticated:
 
             self.contexto = {
